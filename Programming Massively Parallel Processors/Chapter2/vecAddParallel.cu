@@ -55,13 +55,9 @@ int main() {
         v2[i] = rand();
         v3[i] = 0;
     }
-    printf("%f\n", v1[252]);
-    printf("%f\n", v2[252]);
-    printf("%f\n", v3[252]);
 
     vecAdd(v1, v2, v3, N);
-    printf("%f\n", v3[252]);
-    
+  
     for (unsigned int i = 0; i < N; ++i) {
         if (v3[i] != v1[i] + v2[i]) {
             printf("Error\n");
