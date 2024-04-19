@@ -4,10 +4,8 @@
 
 #define N 1000
 
-inline cudaError_t checkCuda(cudaError_t result)
-{
-	if (result != cudaSuccess)
-	{
+inline cudaError_t checkCuda(cudaError_t result) {
+	if (result != cudaSuccess) {
 		fprintf(stderr, "CUDA Runtime Error: %s\n", cudaGetErrorString(result));
 		assert(result == cudaSuccess);
 	}
