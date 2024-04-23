@@ -1,5 +1,6 @@
 int CHANNELS = 3; // We assume that CHANNELS is a constant of value 3, 
                   //and its definition is outside the kernel function.
+                  // {r, g, b}
 
 // Each input image is encoded as unsigned chars [0, 255]
 // Each pixel is 3 consecutive chars for the 3 channels (RGB)
