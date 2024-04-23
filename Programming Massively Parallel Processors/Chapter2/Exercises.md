@@ -18,5 +18,22 @@ indices to the data index (i) of the first element to be processed by a thread?
 (C) i=(blockIdx.x * blockDim.x + threadIdx.x) * 2;  
 (D) i=blockIdx.x * blockDim.x * 2 + threadIdx.x;  
 
+3.
+We want to use each thread to calculate two elements of a vector addition.
+Each thread block processes 2 * blockDim.x consecutive elements that form
+two sections. All threads in each block will process a section first, each
+processing one element. They will then all move to the next section, eachExercises
+processing one element. Assume that variable i should be the index for the
+first element to be processed by a thread. What would be the expression for
+mapping the thread/block indices to data index of the first element?
+
+(A) i=blockIdx.x * blockDim.x + threadIdx.x +2;
+(B) i=blockIdx.x * threadIdx.x * 2;
+(C) i=(blockIdx.x * blockDim.x + threadIdx.x) * 2;
+(D) i=blockIdx.x * blockDim.x * 2 + threadIdx.x;
+
+
+
+
 
 // TODO
