@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <cuda_profiler_api.h>
 
-#define N 1000
+#define N 100000000
 
 inline cudaError_t checkCuda(cudaError_t result) {
 	if (result != cudaSuccess) {
@@ -22,7 +23,7 @@ __global__ void vecAddkernel(float* A, float* B, float* C, int n) {
 
 void vecAdd(float* A_h, float* B_h, float* C_h, int n) {
     float *A_d, *B_d, *C_d;
-    int size = N * sizeof(float);
+    size_t size = N * sizeof(float);
 
     checkCuda( cudaMalloc((void**) &A_d, size) );
     checkCuda( cudaMalloc((void**) &B_d, size) );
