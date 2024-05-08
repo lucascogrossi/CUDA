@@ -3,7 +3,6 @@
 //each side (radius) of the patch and 2 * BLUR_SIZE+1 gives the total number of pixels
 //across one dimension of the patch
 
-int BLUR_SIZE = 1;
 
 __global__ void blurKernel(unsigned char *in, unsigned char *out, int w, int h) {
     int col = blockIdx.x * blockDim.x + threadIdx.x;

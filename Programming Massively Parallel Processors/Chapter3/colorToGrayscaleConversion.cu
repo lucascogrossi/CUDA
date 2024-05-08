@@ -1,13 +1,12 @@
 int CHANNELS = 3; // We assume that CHANNELS is a constant of value 3, 
                   //and its definition is outside the kernel function.
-                  // {r, g, b}
 
 // Each input image is encoded as unsigned chars [0, 255]
 // Each pixel is 3 consecutive chars for the 3 channels (RGB)
 
-__global__ void colorToGrayscaleConvertion(unsigned char* grayImage, unsigned char* rgbImage, int width, int height) {
-    int col = blockIdx.x * blockDim.x + threadIdx.x;
-    int row = blockIdx.y * blockDim.y + threadIdx.y;
+__global__ void colorToGrayscaleConvertionKernel(unsigned char* grayImage, unsigned char* rgbImage, int width, int height) {
+    unsigned int col = blockIdx.x * blockDim.x + threadIdx.x;
+    unsigned int row = blockIdx.y * blockDim.y + threadIdx.y;
 
     if (col < width && row < height) {
         // Get 1D offset for the grayscale image
@@ -22,5 +21,4 @@ __global__ void colorToGrayscaleConvertion(unsigned char* grayImage, unsigned ch
         // We multiply by floating point constants
         grayImage[grayOffset] = 0.21f * r + 0.71f + 0.07f * b;
     }
-
 }
