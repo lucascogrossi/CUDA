@@ -18,7 +18,11 @@ __global__ void blurKernel(unsigned char* image, unsigned char* blurred, unsigne
         int sum = 0;
         for (int inRow = outRow - BLUR_SIZE; inRow < outRow + BLUR_SIZE + 1; ++inRow) {
             for (int inCol = outCol - BLUR_SIZE; inCol < outCol + BLUR_SIZE + 1; ++inCol) {
-                sum += image[inRow * width + inCol];
+
+                // Make sure neighbouring pixels are not out of bounds
+                if (inRow >= 0 && inRow < height && inCol >= 0 && inCol < width) {
+                    sum += image[inRow * width + inCol];
+                }
             }
         }
         blurred[outRow * width + outCol] = sum / (unsigned char) ((2 * BLUR_SIZE + 1) * (2 * BLUR_SIZE + 1));       
