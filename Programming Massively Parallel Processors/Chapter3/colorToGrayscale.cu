@@ -2,8 +2,8 @@ __global __ void colorToGrayscaleKernel(unsigned char* red, unsigned char* green
                                   unsigned char* gray, unsigned int width, unsigned int height) {
 
     // Global thread indexing 
-    unsigned int row = blockIdx.y * blockDim.y + threadIdx.y;
-    unsigned int col = blockIdx.x * blockDim.x + threadIdx.x;
+    int row = blockIdx.y * blockDim.y + threadIdx.y;
+    int col = blockIdx.x * blockDim.x + threadIdx.x;
 
     // Boundary condition
     if (row < height && col < width) {
