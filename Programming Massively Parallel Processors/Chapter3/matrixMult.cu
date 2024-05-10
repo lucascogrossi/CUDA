@@ -69,4 +69,8 @@ int main() {
     initMatrix(b, N);
 
     matrixMult(a, b, c, N);
+
+    free(a);
+    free(b);
+    free(c);
 }
