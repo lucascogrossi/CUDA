@@ -10,28 +10,30 @@ inline cudaError_t checkCuda(cudaError_t result) {
 	return result;
 }
 
-__global__ void matrixMultKernel(int* A, int* B, int* C, int N) {
+__global__ void matrixMultKernel(float* A, float* B, float* C, int N) {
 
     unsigned int row = blockIdx.y * blockDim.y + threadIdx.y;
     unsigned int col = blockIdx.x * blockDim.x + threadIdx.x;
 
-    int sum = 0;
+    if ((row < N) && (col < N)) {
+        float sum = 0.0f;
 
-    for (unsigned int i = 0; i < N; ++i) {
-        sum += A[row * N + i] * B[i * N + col];
+        for (unsigned int i = 0; i < N; ++i) {
+            sum += A[row * N + i] * B[i * N + col];
+        }
+        C[row * N + col] = sum;
     }
-    C[row * N + col] = sum;
 }
 
 
-void initMatrix(int* a, int N) {
+void initMatrix(float* a, int N) {
     for(unsigned int i = 0; i < N * N; ++i)
         a[i] = rand() % 100;
 }
 
-void matrixMult(int* a_h, int* b_h, int* c_h, int N) {
-    int *a_d, *b_d, *c_d;
-    size_t size = sizeof(int) * N * N;
+void matrixMult(float* a_h, float* b_h, float* c_h, int N) {
+    float *a_d, *b_d, *c_d;
+    size_t size = sizeof(float) * N * N;
 
     checkCuda( cudaMalloc((void**) &a_d, size) );
     checkCuda( cudaMalloc((void**) &b_d, size) );
@@ -57,13 +59,13 @@ void matrixMult(int* a_h, int* b_h, int* c_h, int N) {
 int main() {
 
     int N = 1 << 10;
-    size_t size = N * N * sizeof(int);
+    size_t size = N * N * sizeof(float);
 
-    int *a, *b, *c;
+    float *a, *b, *c;
 
-    a = (int*) malloc(size);
-    b = (int*) malloc(size);
-    c = (int*) malloc(size);
+    a = (float*) malloc(size);
+    b = (float*) malloc(size);
+    c = (float*) malloc(size);
 
     initMatrix(a, N);
     initMatrix(b, N);
