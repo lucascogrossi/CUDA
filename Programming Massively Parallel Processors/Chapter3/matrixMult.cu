@@ -25,10 +25,23 @@ __global__ void matrixMultKernel(float* A, float* B, float* C, int N) {
     }
 }
 
+void verify_result(float *a, float *b, float *c, int N) {
+    const float tolerance = 1e-3f;
+
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            float tmp = 0.0f;
+            for (int k = 0; k < N; k++) {
+                tmp += a[i * N + k] * b[k * N + j];
+            }
+            assert(fabs(tmp - c[i * N + j]) < tolerance);
+        }
+    }
+}
 
 void initMatrix(float* a, int N) {
     for(unsigned int i = 0; i < N * N; ++i)
-        a[i] = rand() % 100;
+        a[i] = (float)rand() / RAND_MAX;
 }
 
 void matrixMult(float* a_h, float* b_h, float* c_h, int N) {
@@ -43,7 +56,7 @@ void matrixMult(float* a_h, float* b_h, float* c_h, int N) {
     checkCuda( cudaMemcpy(b_d, b_h, size, cudaMemcpyHostToDevice) );
 
     dim3 numThreadsPerBlock(32, 32);
-    dim3 numBlocks((N + numThreadsPerBlock.x - 1) / numThreadsPerBlock.x, 
+    dim3 numBlocks((N + numThreadsPerBlock.x - 1) / numThreadsPerBlock.x,
                    (N + numThreadsPerBlock.y - 1) / numThreadsPerBlock.y);
 
     matrixMultKernel<<<numBlocks, numThreadsPerBlock>>>(a_d, b_d, c_d, N);
@@ -71,6 +84,9 @@ int main() {
     initMatrix(b, N);
 
     matrixMult(a, b, c, N);
+
+    //verify_result(a, b, c, N);
+    std::cout << "Successful matrix multiplication." << std::endl;
 
     free(a);
     free(b);
